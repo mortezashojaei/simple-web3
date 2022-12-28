@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 
 function App() {
+  function onsubmit(event) {
+    event.preventDefault();
+    alert(event.target[0].value);
+  }
+
+  function getValue() {}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <select name="network" id="network">
+        <option value="BSC">BSC</option>
+        <option value="Etherum">Etherum</option>
+        <option value="Goerli">Goerli</option>
+        <option value="MoonbaseAlpha">MoonbaseAlpha</option>
+      </select>
+      <button onClick={getValue}>Get Value</button>
+
+      <form onSubmit={onsubmit}>
+        <input name="value" type="number" placeholder="Put a number to set" />
+        <button type="submit">Set Value</button>
+      </form>
     </div>
   );
 }
