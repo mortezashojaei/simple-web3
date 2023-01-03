@@ -1,28 +1,44 @@
+import {
+  EthereumClient,
+  modalConnectors,
+  walletConnectProvider,
+} from "@web3modal/ethereum";
+
+import { Web3Modal } from "@web3modal/react";
+
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+
+import { goerli, bsc, polygon } from "wagmi/chains";
+
 import "./App.css";
+import { Main } from "./Main";
+
+const PROJECT_ID = process.env.REACT_APP_PROJECT_ID;
 
 function App() {
-  function onsubmit(event) {
-    event.preventDefault();
-    alert(event.target[0].value);
-  }
+  const chains = [goerli, bsc, polygon];
 
-  function getValue() {}
+  // Wagmi client
+  const { provider } = configureChains(chains, [
+    walletConnectProvider({ projectId: PROJECT_ID }),
+  ]);
+  const wagmiClient = createClient({
+    autoConnect: true,
+    connectors: modalConnectors({ appName: "web3Modal", chains }),
+    provider,
+  });
+
+  // Web3Modal Ethereum Client
+  const ethereumClient = new EthereumClient(wagmiClient, chains);
 
   return (
-    <div className="app">
-      <select name="network" id="network">
-        <option value="BSC">BSC</option>
-        <option value="Etherum">Etherum</option>
-        <option value="Goerli">Goerli</option>
-        <option value="MoonbaseAlpha">MoonbaseAlpha</option>
-      </select>
-      <button onClick={getValue}>Get Value</button>
+    <>
+      <WagmiConfig client={wagmiClient}>
+        <Main />
+      </WagmiConfig>
 
-      <form onSubmit={onsubmit}>
-        <input name="value" type="number" placeholder="Put a number to set" />
-        <button type="submit">Set Value</button>
-      </form>
-    </div>
+      <Web3Modal projectId={PROJECT_ID} ethereumClient={ethereumClient} />
+    </>
   );
 }
 
