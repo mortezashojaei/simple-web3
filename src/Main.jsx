@@ -1,7 +1,10 @@
 import { Web3Button, Web3NetworkSwitch } from "@web3modal/react";
+import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { getValueInContract, setValueInContract } from "./contract";
 export const Main = () => {
+  const { isConnected } = useAccount();
+
   function onsubmit(event) {
     event.preventDefault();
     setValueInContract(event.target[0].value);
