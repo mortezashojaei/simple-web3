@@ -1,11 +1,18 @@
 import { Web3Button, Web3NetworkSwitch } from "@web3modal/react";
+import { ethers } from "ethers";
+import { getValueInContract, setValueInContract } from "./contract";
 export const Main = () => {
   function onsubmit(event) {
     event.preventDefault();
-    alert(event.target[0].value);
+    setValueInContract(event.target[0].value);
   }
 
-  function getValue() {}
+  function getValue() {
+    getValueInContract().then((result) => {
+      console.log(result);
+      alert(ethers.utils.formatEther(result));
+    });
+  }
   return (
     <div className="app">
       <div className="web3">
