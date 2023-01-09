@@ -1,65 +1,114 @@
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 
-let getValueInContract;
-let setValueInContract;
+import { useContractRead } from "wagmi";
 
-try {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+// let getValueInContract;
+// let setValueInContract;
 
-  const signer = provider.getSigner();
+// try {
+//   const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-  const ContractAddress = "0x58dfd42499d8bc3335465293322e9e183d57da09";
+//   const signer = provider.getSigner();
 
-  const ContractAbi = [
-    {
-      inputs: [],
-      name: "get",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "num",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_num",
-          type: "uint256",
-        },
-      ],
-      name: "set",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ];
-  const Contract = new ethers.Contract(ContractAddress, ContractAbi, provider);
+//   const ContractAddress = "0x58dfd42499d8bc3335465293322e9e183d57da09";
 
-  const ContractWithSigner = Contract.connect(signer);
+//   const ContractAbi = [
+//     {
+//       inputs: [],
+//       name: "get",
+//       outputs: [
+//         {
+//           internalType: "uint256",
+//           name: "",
+//           type: "uint256",
+//         },
+//       ],
+//       stateMutability: "view",
+//       type: "function",
+//     },
+//     {
+//       inputs: [],
+//       name: "num",
+//       outputs: [
+//         {
+//           internalType: "uint256",
+//           name: "",
+//           type: "uint256",
+//         },
+//       ],
+//       stateMutability: "view",
+//       type: "function",
+//     },
+//     {
+//       inputs: [
+//         {
+//           internalType: "uint256",
+//           name: "_num",
+//           type: "uint256",
+//         },
+//       ],
+//       name: "set",
+//       outputs: [],
+//       stateMutability: "nonpayable",
+//       type: "function",
+//     },
+//   ];
+//   const Contract = new ethers.Contract(ContractAddress, ContractAbi, provider);
 
-  getValueInContract = () => ContractWithSigner.get();
+//   const ContractWithSigner = Contract.connect(signer);
 
-  setValueInContract = (number) => ContractWithSigner.set(number);
-} catch (error) {
-  console.log(error);
-}
+//   getValueInContract = () => ContractWithSigner.get();
 
-export { getValueInContract, setValueInContract };
+//   setValueInContract = (number) => ContractWithSigner.set(number);
+// } catch (error) {
+//   console.log(error);
+// }
+
+// export { getValueInContract, setValueInContract };
+
+export const useGetValue = () =>
+  useContractRead({
+    address: "0x58dfd42499d8bc3335465293322e9e183d57da09",
+    abi: [
+      {
+        inputs: [],
+        name: "get",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "num",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "_num",
+            type: "uint256",
+          },
+        ],
+        name: "set",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+    functionName: "get",
+  });
