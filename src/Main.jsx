@@ -1,13 +1,17 @@
+import { useState } from "react";
 import { Web3Button, Web3NetworkSwitch } from "@web3modal/react";
-import { useAccount } from "wagmi";
 import { ethers } from "ethers";
-import { useGetValue } from "./contract";
+import { useGetValue, useSetValue } from "./contract";
+
 export const Main = () => {
-  const { isConnected } = useAccount();
+  const [value, setValue] = useState();
+
   const { refetch } = useGetValue();
+  const { write } = useSetValue(value);
+
   function onsubmit(event) {
     event.preventDefault();
-    // setValueInContract(event.target[0].value);
+    write();
   }
 
   function getValue() {
@@ -25,8 +29,16 @@ export const Main = () => {
       <button onClick={getValue}>Get Value</button>
 
       <form onSubmit={onsubmit}>
-        <input name="value" type="number" placeholder="Put a number to set" />
-        <button type="submit">Set Value</button>
+        <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          name="value"
+          type="number"
+          placeholder="Put a number to set"
+        />
+        <button disabled={!write} type="submit">
+          Set Value
+        </button>
       </form>
     </div>
   );
